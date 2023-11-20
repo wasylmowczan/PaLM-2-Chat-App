@@ -1,6 +1,22 @@
 import './App';
+import { useState } from 'react';
+
 
 const App = () => {
+  const [text, setText] = useState('');
+  const [messages, setMessages] = useState([]);
+
+  const getResponse= async () => {
+    const response = await fetch(`http://localhost:8000/prompt/${text}`);
+    const data = await response.json();
+    setMessages([...messages,
+      {
+        author: data.messages[0].content,
+        bot: data.candidates[0].content
+      }
+    ]);
+  }
+
   return (
     <div className="chat-bot">
       <div className="chat-header">
@@ -17,11 +33,15 @@ const App = () => {
         </svg>
       </div>
       <div className="feed">
-        <div className="question bubble"></div>
-        <div className="response bubble"></div>
+        {messages?.map((message, _index) => (
+          <div key={_index}>
+            <div className="question bubble">{message.author}</div>
+            <div className="response bubble">{message.bot}</div>
+          </div>
+        ))}
       </div>
-      <textarea />
-      <button>➡️</button>
+      <textarea value={text} onChange={(e) => setText(e.target.value)} />
+      <button onClick={getResponse}>➡️</button>
     </div>
   );
 }

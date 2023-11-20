@@ -72,3 +72,17 @@ button {
 .response {
     margib-left: 85px;
 }
+
+.chat-header {
+    position:relative;
+    z-index: 1;
+}
+
+.feed {
+    position: absolute;
+    bottom: 82px;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    overflow-y: auto;
+}
